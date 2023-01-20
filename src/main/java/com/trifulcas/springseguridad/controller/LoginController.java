@@ -10,4 +10,9 @@ public class LoginController {
 	public String formLogin() {
 		return "login";
 	}
+	
+	@GetMapping("/prohibido")
+	public String prohibido() {
+		return "prohibido";
+	}
 }

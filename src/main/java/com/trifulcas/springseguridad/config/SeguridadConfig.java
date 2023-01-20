@@ -15,11 +15,14 @@ public class SeguridadConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().anyRequest().authenticated()
+		http.authorizeRequests().antMatchers("/").hasRole("EMPLEADO")
+		.antMatchers("/gerente/**").hasRole("GERENTE")
+		.antMatchers("/admin/**").hasRole("ADMIN")
 		.and().formLogin().loginPage("/formLogin")
 		.loginProcessingUrl("/authenticateTheUser")
 		.permitAll()
-		.and().logout().permitAll();
+		.and().logout().permitAll()
+		.and().exceptionHandling().accessDeniedPage("/prohibido");
 
 	}
 	@Override
@@ -27,9 +30,9 @@ public class SeguridadConfig extends WebSecurityConfigurerAdapter {
 	Exception {
 	  auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).withUser("juan").password(passwordEncoder().encode("1234")).roles("EMPLEADO");
 	  
-	  auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).withUser("ana").password(passwordEncoder().encode("1234")).roles("GERENTE");
+	  auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).withUser("ana").password(passwordEncoder().encode("1234")).roles("EMPLEADO","GERENTE");
 	  
-	  auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).withUser("eva").password(passwordEncoder().encode("1234")).roles("ADMIN");
+	  auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).withUser("eva").password(passwordEncoder().encode("1234")).roles("EMPLEADO","ADMIN");
 	  
 	}
 	@Bean
